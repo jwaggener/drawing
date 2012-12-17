@@ -7,24 +7,24 @@ oonn.index.DetailView = Backbone.View.extend({
   className: 'detailView',
   
   events:{
-  'keyup .name' : 'handleName',
-  'keyup .tags' : 'handleTags',
-  'click .star' : 'handleStar',
-  'click .delete' : 'handleDelete',
   'click .close' : 'handleClose'
   },
   
   initialize: function(){
     _.bindAll( this );
+    this.meta;
     this.drawingRenderer = new oonn.graphics.drawing.animated( null );
     this.scale = 1;
     this.setDrawing( this.options.drawing );
-    //this.render();
+    this.render();
   },
   
   setDrawing: function( drawing ){
     this.drawing = drawing;
-    if( this.drawing ) this.render();
+    if( this.drawing ){
+      this.renderDrawing( this.drawing );
+      this.renderData( this.drawing );
+    }
   },
   
   getCanvas: function( w, h ){
@@ -43,9 +43,8 @@ oonn.index.DetailView = Backbone.View.extend({
   },
   
   render: function(){
+    console.log( 'detail render' );
     this.$el.html( Template.drawingwrapper() );
-    this.renderData( this.drawing );
-    this.renderDrawing( this.drawing );
   },
   
   renderDrawing: function( d ){
@@ -71,68 +70,19 @@ oonn.index.DetailView = Backbone.View.extend({
   },
   
   renderData: function( d ){
-    var dataHtml;
-    var starstyles;
-    starstyles = ( d.starred ) ? 'starred': '';
-    this.$el.attr('data-id', d._id);
-    dataHtml = Template.drawingmeta({
-      id:d._id,
-      starred: starstyles,
-      name: function(){ return d.name || '' },
-      tags: function(){ if( d.tags ){ return d.tags.join(', '); }else{ return ''; } }
-    });
-    this.$el.find('.data').html( dataHtml );
-  },
-  
-  handleName: function( e ){
-    var target;
-    var id, record;
-    target = $(e.currentTarget);
-    id = target.closest( '[data-id]' ).attr('data-id');
-    record = Drawings.findOne( id );
-    if( record ){
-      record.name = target.val();
-      Drawings.update( String(id), record );
-    }
-  },
-  
-  handleTags: function( e ){
-    var target;
-    var strVal;
-    var id, record;
-    target = $(e.currentTarget);
-    id = target.closest( '[data-id]' ).attr('data-id');
-    record = Drawings.findOne( id );
-    if( record ){
-      strVal = target.val();
-      strVal = strVal.replace(/\s/g, "");
-      strVal = strVal.toLowerCase();
-      record.tags = strVal.split(",");
-      Drawings.update( String(id), record );
-    }
-  },
-  
-  handleStar: function(e){
-    var id, record, starred;
-    id = $( e.currentTarget ).closest( '[data-id]' ).attr('data-id');
-    record = Drawings.findOne( id );
-    if( record.starred == undefined ){
-      starred = true;
-    }else{
-      starred = !record.starred;
-    }
-    record.starred = starred;
-    Drawings.update( String(id), record );
-    this.renderData( record );
-  },
-  
-  handleDelete: function(e){
-    var id = $( e.currentTarget ).closest( '[data-id]' ).attr('data-id');
-    Drawings.remove( String(id) );
-    this.render();
+    
+    console.log( 'detail renderData' );
+    
+    this.$el.find('#meta').detach();
+    if( this.meta ) this.meta = null;
+    
+    this.meta = new oonn.index.MetaDataView();
+    this.meta.setDrawing( this.drawing );
+    this.$el.find('.data').append( this.meta.el );
   },
   
   handleClose: function(){
+    console.log( 'handleClose' );
     window.location = '#null';
   }
   

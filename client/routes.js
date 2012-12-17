@@ -43,7 +43,7 @@ var Router = Backbone.Router.extend({
       if( !(Boolean( $('#overlay').length )) ) $('#scaffold').append( Template.overlay() );
       if( !(Boolean( $('#detail').length )) )  $('body').append( Template.detail() );
       
-      if( !this.detailView ) this.detailView = new oonn.index.DetailView( { drawing: drawing } );
+      this.detailView = new oonn.index.DetailView();
       
       //retrieve drawing
       cursor = Drawings.find( { _id: id }, { limit: 1 } ).fetch();
@@ -52,7 +52,8 @@ var Router = Backbone.Router.extend({
       this.detailView.setDrawing( drawing );
       
       $('.overlay').removeClass('hide');
-      $( '.detail .content' ).html( this.detailView.$el );
+      $( '.detail .content' ).empty();
+      $( '.detail .content' ).append( this.detailView.$el );
       
     }else{
       this.pageToExecute = 'detail';
