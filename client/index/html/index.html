@@ -1,0 +1,63 @@
+<body>
+  
+</body>
+
+<!-- drop everything here -->
+<template name="scaffold">
+  <div id='scaffold' class='relative' style='width: 100%; height: 100%' ></div>
+</template>
+
+<!-- toolbar at top of index page -->
+<template name="toolbar">
+  <div id='toolbar' class='toolbar' >
+  </div>
+</template>
+
+<!-- overlays the entire page -->
+<template name="overlay">
+  <div id='overlay' class='overlay overlayShim' ></div>
+</template>
+
+<template name="detail">
+  <div class='overlay detail frame' >
+    <div class='content'>
+      DETAIL
+    </div>
+  </div>
+</template>
+
+<!-- clear and save buttons for the drawing page -->
+<template name="clearsave">
+  <button id='clear' class='buttonbase'>clear</button><button id='save'class='buttongreen'>Save</button>
+</template>
+
+<!-- color pickers for the drawing page -->
+<template name="forebackground">
+  <input class='background color {pickerClosable:true}' readonly style='width:3em;'/><input class='foreground color {pickerClosable:true}' readonly style='width:3em;' />
+</template>
+
+<!-- controls for each drawing for the review/index page  -->
+<template name="drawingwrapper">
+  <div class='canvas left'></div>
+  <div class='data left' >
+  </div>
+</template>
+
+<template name="drawingmeta">
+  <span class='block close right'>CLOSE</span>
+  <span class='block clearboth'>ID: {{id}}</span>
+  <span class='block'>Date: {{date}}</span>
+  <span class='block'>Name:<input class='name' type='text' placeholder='Add a name' value='{{name}}'></input></span>
+  <span class='block'>Tags:<input class='tags' type='text' placeholder='Add tags' value='{{tags}}'></input></span>
+  <div class='star {{starred}}'></div>
+  <div class='delete'>DELETE</div>
+</template>
+
+<template name="pages">
+  <div class='pages margintop2em clearfix' ></div>
+  <div class='reachedBottom' ></div>
+</template>
+
+<template name="page">
+  <div class='page' ></div>
+</template>
