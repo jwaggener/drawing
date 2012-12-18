@@ -37,13 +37,14 @@ oonn.index.IndexView = Backbone.View.extend({
   
   renderDrawings: function(){
     var cursor;
-    var range = ( this.lastId ) ? { _id: { $gt: this.lastId } } : {};
-    //var range = ( this.lastDate ) ? { date: { $lt: this.lastDate } } : {};
+    //var range = ( this.lastId ) ? { _id: { $gt: this.lastId } } : {};//maybe the range is different?
+    console.log( 'this.lastDate', this.lastDate );
+    var range = ( this.lastDate ) ? { date: { $lt: this.lastDate } } : {};
     var args = { limit: 10, sort: { date:-1 } };
     cursor = Drawings.find( range, args ).fetch();
     this.renderPage();
-    this.lastId = cursor[ cursor.length - 1 ]['_id'];
-    //this.lastDate = cursor[ cursor.length - 1 ]['date'];
+    //this.lastId = cursor[ cursor.length - 1 ]['_id'];
+    if( cursor.length ) this.lastDate = cursor[ cursor.length - 1 ]['date'];
     cursor.forEach( this.renderDrawing );
     this.setScrolledToBottom( false );
   },
