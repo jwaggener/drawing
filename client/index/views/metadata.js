@@ -45,8 +45,7 @@ oonn.index.MetaDataView = Backbone.View.extend({
     id = target.closest( '[data-id]' ).attr('data-id');
     record = Drawings.findOne( id );
     if( record ){
-      Drawings.update( String(id), { $set:{ name: target.val(), date: new Date() } } );
-      //Drawings.update( String(id), { $set:{ date: new Date() } } );
+      Drawings.update( String(id), { $set:{ name: target.val() } } );
     }
   },
   

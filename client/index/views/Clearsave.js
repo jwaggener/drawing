@@ -34,7 +34,7 @@ oonn.index.ClearSaveView = Backbone.View.extend({
   
   save: function(){
     var drawing = {};
-    drawing.date = new Date();
+    drawing.date = ( new Date() ).getTime();
     drawing.userId = Meteor.userId() || 'joepublic';
     drawing.points = this.model.get('points');
     drawing.dimensions = { width: this.context.canvas.width, height: this.context.canvas.height };
