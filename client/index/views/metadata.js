@@ -28,7 +28,7 @@ oonn.index.MetaDataView = Backbone.View.extend({
     this.$el.attr('data-id', d._id);
     dataHtml = Template.drawingmeta({
       id:d._id,
-      date: d.date,
+      date: ( new Date(d.date) ).toDateString(),
       starred: starstyles,
       name: function(){ return d.name || '' },
       tags: function(){ if( d.tags ){ return d.tags.join(', '); }else{ return ''; } }
