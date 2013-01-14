@@ -31,7 +31,8 @@ oonn.index.MetaDataView = Backbone.View.extend({
       date: ( new Date(d.date) ).toDateString(),
       starred: starstyles,
       name: function(){ return d.name || '' },
-      tags: function(){ if( d.tags ){ return d.tags.join(', '); }else{ return ''; } }
+      tags: function(){ if( d.tags ){ return d.tags.join(', '); }else{ return ''; } },
+      points: d.points
     });
     this.$el.append( dataHtml );
     this.delegateEvents( this.events );

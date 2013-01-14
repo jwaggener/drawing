@@ -6,7 +6,7 @@ var Router = Backbone.Router.extend({
     pageToExecute = null;
     this.args = null;
     //pages
-    this.indexView, this.detailView, this.drawingView;
+    this.indexView, this.detailView, this.variationsView, this.drawingView;
     //are we subscribed to the set
     this.subscribed;
   },
@@ -14,7 +14,9 @@ var Router = Backbone.Router.extend({
   routes:{
     '': 'index',
     'detail/:id': 'detail',
+    'variations/:id': 'variations',
     'drawing': 'drawing',
+    'verticalstripes/:id': 'verticalStripes',
     'colorpicker': 'colorpicker',
     'null': 'null'
   },
@@ -62,6 +64,25 @@ var Router = Backbone.Router.extend({
     }
   },
   
+  //http://localhost:3000/#variations/bffc072d-1f40-43bf-83ed-f2b918a9c515
+  variations: function( id ){
+    if(this.subscribed){
+      if( !$('#scaffold').length ) $('body').append( Template.scaffold() );
+      //retrieve drawing
+      cursor = Drawings.find( { _id: id }, { limit: 1 } ).fetch();
+      drawing = cursor[0];
+      if( !this.variationsView ){
+        this.variationsView = new oonn.variations.IndexView( { drawing: drawing } );
+      }
+      $('#scaffold').html( this.variationsView.el );
+    }else{
+      this.pageToExecute = 'variations';
+      this.args = arguments;
+      this.subscribeToColleciton();
+    }
+      
+  },
+  
   drawing: function(){
     var model;
     var drawingView;
@@ -78,6 +99,21 @@ var Router = Backbone.Router.extend({
     $('#scaffold').html( drawingView.el );
     $('#scaffold').append( clearsaveView.el );
     $('#scaffold').append( forebackview.el );
+  },
+  
+  verticalStripes: function( id ){
+    if(this.subscribed){
+      if( !$('#scaffold').length ) $('body').append( Template.scaffold() );
+      cursor = Drawings.find( { _id: id }, { limit: 1 } ).fetch();
+      drawing = cursor[0];
+      this.verticalStripes = new oonn.canvases.IndexView( { drawing: drawing });
+      $('#scaffold').html( this.verticalStripes.el );
+    }else{
+      this.pageToExecute = 'verticalStripes';
+      this.args = arguments;
+      this.subscribeToColleciton();
+    }
+    
   },
   
   colorpicker: function(){
